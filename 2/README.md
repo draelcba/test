@@ -3,7 +3,7 @@
 ## 一、Mesos组成结构、在源码中具体位置与工作流程
 
 ### 1、Mesos组成结构
-![](http://github.com/draelcba/test/raw/master/2/Mesos框架图.png)
+![image](http://github.com/draelcba/test/raw/master/2/Mesos框架图.png)
 
 如上图所示，Mesos主要组件有：
 
