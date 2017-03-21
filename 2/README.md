@@ -16,12 +16,13 @@ Mesos由以下几部分组成：
 
 ### 2、在源码中的具体位置
 
-* Zookeeper：位于mesos-1.1.0/src/zookeeper文件夹中，其中detector.cpp用来检测当前的Leader，contender.cpp用来进行Leader的竞争。
-* Master：位于mesos-1.1.0/src/master文件夹中，其中的main.cpp是入口程序，封装了Google的gflags来解析命令行参数和环境变量。在Master的初始化过程中，首先初始化Allocator，默认的Allocator是内置的Hierarchical Dominant Resource Fairness allocator。然后监听消息，注册处理函数，当收到消息时调用相应的函数。最后竞争（默认Zookeeper)成为Master中的Leader，或者检测当前的Leader。
-* Slave：位于mesos-1.1.0/src/slave文件夹中，其中的main.cpp是入口程序，封装了Google的flags来解析命令行参数和环境变量。在slave.cpp中，首先初始化资源预估器、初始化attributes、初始化hostname。然后注册一系列处理函数，当收到消息时调用相应的函数。
 * Test Framework：位于mesos-1.1.0/src/examples/test_framework.cpp中，在main函数中，首先指定Executor的uri，配置Executor的信息，创建Scheduler。
 * Test Scheduler：位于mesos-1.1.0/src/scheduler文件夹中，其中，运行MesosSchedulerDriver的代码在mesos-1.1.0/src/sched/sched.cpp中，首先检测Leader，创建一个线程，然后注册消息处理函数，最终调用了Test Framework的resourceOffers函数，根据得到的offers，创建一系列Tasks，然后调用driver的launchTasks函数，最终向Leader发送launchTasks的消息。
 * Test Executor：位于mesos-1.1.0/src/examples/test_executor.cpp中，运行MesosExecutorDriver和Slave进行通信。MesosExecutorDriver的实现在mesos-1.1.0/src/exec/exec.cpp中，类似MesosSchedulerDriver，它创建了一个线程，处理相应的消息。
+* Zookeeper：位于mesos-1.1.0/src/zookeeper文件夹中，其中detector.cpp用来检测当前的Leader，contender.cpp用来进行Leader的竞争。
+* Master：位于mesos-1.1.0/src/master文件夹中，其中的main.cpp是入口程序，封装了Google的gflags来解析命令行参数和环境变量。在Master的初始化过程中，首先初始化Allocator，默认的Allocator是内置的Hierarchical Dominant Resource Fairness allocator。然后监听消息，注册处理函数，当收到消息时调用相应的函数。最后竞争（默认Zookeeper)成为Master中的Leader，或者检测当前的Leader。
+* Slave：位于mesos-1.1.0/src/slave文件夹中，其中的main.cpp是入口程序，封装了Google的flags来解析命令行参数和环境变量。在slave.cpp中，首先初始化资源预估器、初始化attributes、初始化hostname。然后注册一系列处理函数，当收到消息时调用相应的函数。
+
 
 ### 3、工作流程
 
@@ -36,16 +37,10 @@ Mesos由以下几部分组成：
 
 ### 1、运行过程
 
-<div align=center><img width="60%" height="60%" src="https://github.com/ffeiDing/OS-Practice/blob/master/hw2/Mesos流程.png"/></div>
-如上图所示，Framework运行在Mesos上，任务的调度和执行由Framework自己完成：
-
-* Slave1向Master汇报其有（4CPU，4GB RAM）的空闲资源。
-* Master收到Slave1发来的消息后，调用分配模块，发送一个描述Slave1当前空闲资源的resource offer给Framework1。
-* Framework1的调度器回复Master，需要运行两个task在Slave1上，第一个task需要资源（2CPU, 1GB RAM），第二个task需要资源（1CPU, 2GB RAM）。
-* Master把任务需求资源发送给Slave1，Slave1分配适当的资源给Framework1的Executor，然后Executor开始执行这两个任务，因为Slave1还剩（1CPU，1GB RAM）的资源还未分配，分配模块可以将这些资源提供给Framwork2来使用。
-* Master把任务需求资源发送给Slave1，Slave1分配适当的资源给Framework1的Executor，然后Executor开始执行这两个任务，因为Slave1还剩（1CPU，1GB RAM）的资源还未分配，分配模块可以将这些资源提供给Framwork2来使用。
-<div align=center><img width="70%" height="70%" src="https://github.com/ffeiDing/OS-Practice/blob/master/hw2/Spark%20框架图.png"/></div>
-以Spark on Mesos为例，根据Spark官方文档，从Spark的视角看，Mesos将Spark master替换为了cluster manager，Mesos决定任务的调度和执行。
+* Slave1向Master汇报其空闲资源。
+* Master收到Slave发来的消息后，调用分配模块，发送一个描述Slave当前空闲资源的resource offer给Framework。
+* Framework的调度器回复Master，需要运行的task，及需要的资源。
+* Master把任务需求资源发送给Slave，Slave分配适当的资源给Framework的Executor，然后Executor开始执行任务。
 
 ### 2、与传统操作系统的对比
 
