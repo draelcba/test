@@ -4,9 +4,7 @@
 
 ### 1、Mesos组成结构
 ![image](https://github.com/draelcba/test/raw/master/2/Mesos框架图.png"Mesos框架图")
-
-</br>
-如上图所示，Mesos主要组件有：
+Mesos由以下几部分组成：
 
 * Zookeeper：选举出Mesos master。
 * Mesos master：接收Mesos slave和Framework scheduler的注册，分配资源。
