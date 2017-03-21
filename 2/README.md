@@ -3,7 +3,8 @@
 ## 一、Mesos组成结构、在源码中具体位置与工作流程
 
 ### 1、Mesos组成结构
-![image](https://github.com/draelcba/test/raw/master/2/Mesos框架图.png"Mesos框架图")
+![image](https://github.com/draelcba/test/raw/master/2/Mesos框架图.png)
+
 Mesos由以下几部分组成：
 
 * Zookeeper：选举出Mesos master。
