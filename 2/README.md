@@ -4,7 +4,7 @@
 
 ### 1、Mesos组成结构
 <div align=center><img width="75%" height="75%" src="https://github.com/ffeiDing/OS-Practice/blob/master/hw2/Mesos%E6%A1%86%E6%9E%B6%E5%9B%BE.png"/></div>
-![image](http://github.com/draelcba/test/raw/master/2/Mesos框架图.png)
+!【】(http://github.com/draelcba/test/raw/master/2/Mesos框架图.png)
 如上图所示，Mesos主要组件有：
 
 * Zookeeper：选举出Mesos master。
